@@ -72,6 +72,8 @@ class TwitterStreamService
   end
 
   def findOrCreateHashtag(text)
+    #Downcase because the API search is case-insensitive
+    text.downcase!
     hashtag = Hashtag.find_by(text: text)
     if not hashtag
       hashtag = Hashtag.new({text: text})

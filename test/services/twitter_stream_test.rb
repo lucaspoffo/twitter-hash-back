@@ -32,12 +32,26 @@ class  TwitterStreamServiceTest < ActiveSupport::TestCase
     assert_equal(TwitterStreamService.instance.findOrCreateHashtag(text), hashtag)
   end
 
+  test "it finds hashtag ignoring case" do
+    hashtag = Hashtag.find_by text: 'brasil'
+    assert_equal(TwitterStreamService.instance.findOrCreateHashtag('BrAsiL'), hashtag)
+  end
+
   test "it creates hashtag when not finding" do
     count = Hashtag.count
     text = 'newhash'
     hashtag = TwitterStreamService.instance.findOrCreateHashtag(text)
     assert_equal hashtag.text, text
     assert_equal Hashtag.count, count + 1
+  end
+
+  test "it creates hashtag with downcase text" do
+    count = Hashtag.count
+    text = 'ARGENTINA'
+    hashtag = TwitterStreamService.instance.findOrCreateHashtag(text)
+    assert_equal hashtag.text, text
+    assert_equal Hashtag.count, count + 1
+    assert_equal hashtag, Hashtag.find_by(text: 'argentina')
   end
 
   test "it creates tweet" do
