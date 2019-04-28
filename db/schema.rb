@@ -27,11 +27,13 @@ ActiveRecord::Schema.define(version: 20190422000642) do
     t.bigint "hashtag_id", null: false
   end
 
-  create_table "tweets", force: :cascade do |t|
+  create_table "tweets", id: false, force: :cascade do |t|
+    t.bigint "id"
     t.string "text"
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_tweets_on_id", unique: true
     t.index ["user_id"], name: "index_tweets_on_user_id"
   end
 
