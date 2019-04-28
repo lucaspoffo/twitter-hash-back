@@ -49,7 +49,7 @@ class  TwitterStreamServiceTest < ActiveSupport::TestCase
     count = Hashtag.count
     text = 'ARGENTINA'
     hashtag = TwitterStreamService.instance.findOrCreateHashtag(text)
-    assert_equal hashtag.text, text
+    assert_equal hashtag.text, 'argentina'
     assert_equal Hashtag.count, count + 1
     assert_equal hashtag, Hashtag.find_by(text: 'argentina')
   end
