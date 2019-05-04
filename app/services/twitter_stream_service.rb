@@ -14,9 +14,13 @@ class TwitterStreamService
   end
 
   def filterByHashtags(hashtags)
-    
+    closeStream if @filter_thread && @filter_thread.status
+
+    track = hashtags.map {|h| '#' + h[:text]}.join(",")
+
+    return if track.empty?
+
     @filter_thread = Thread.new do
-      track = hashtags.map {|h| '#' + h}.join(",")
       @client.filter(track: track, tweet_mode: 'extended') do |object|
         tweet_params = object.to_hash
         text = getTweetText(tweet_params)
@@ -29,7 +33,6 @@ class TwitterStreamService
           hashtag = findOrCreateHashtag(h[:text])
           tweet.hashtags << hashtag
         end
-
       end
     end
   end
@@ -39,6 +42,11 @@ class TwitterStreamService
       return params[:extended_tweet][:full_text]
     end
     return params[:text]
+  end
+
+  def closeStream
+    @client.close
+    @filter_thread.kill
   end
 
   def getTweetHashtags(params)
