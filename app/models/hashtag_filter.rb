@@ -1,0 +1,3 @@
+class HashtagFilter < ApplicationRecord
+  
+end
