@@ -3,7 +3,7 @@ class TweetsController < ApplicationController
 
   def index
     @tweets = params[:hashtags] ? Tweet.contains_hashtags(params[:hashtags]) : Tweet.all
-    render json: @tweets
+    paginate json: @tweets
   end
 
   def show
