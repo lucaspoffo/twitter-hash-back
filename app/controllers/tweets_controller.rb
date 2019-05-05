@@ -2,8 +2,7 @@ class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show]
 
   def index
-    @tweets = Tweet.all
-
+    @tweets = params[:hashtags] ? Tweet.contains_hashtags(params[:hashtags]) : Tweet.all
     render json: @tweets
   end
 
