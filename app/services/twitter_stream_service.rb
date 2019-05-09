@@ -15,7 +15,7 @@ class TwitterStreamService
 
   def filterByHashtags(hashtags)
     closeStream if @filter_thread && @filter_thread.status
-
+    hashtags = hashtags.reject {|h| h[:text].blank?}
     track = hashtags.map {|h| '#' + h[:text]}.join(",")
 
     return if track.empty?
