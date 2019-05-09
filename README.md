@@ -32,3 +32,9 @@ TWITTER_ACCESS_SECRET=<ACCESS_TOKEN_SECRET>
 Para subir o ambiente de desolvovimento execute o comando:
     
     $ rails server
+
+## Deploy
+
+Foi utilizado o heroku para o deploy da aplicação com o link da api:
+
+- https://twitter-hash-back.herokuapp.com/
