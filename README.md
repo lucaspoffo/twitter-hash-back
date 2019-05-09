@@ -37,4 +37,4 @@ Para subir o ambiente de desolvovimento execute o comando:
 
 Foi utilizado o heroku para o deploy da aplicação com o link da api:
 
-- https://twitter-hash-back.herokuapp.com/
+- [https://twitter-hash-back.herokuapp.com/](https://twitter-hash-back.herokuapp.com/tweets)
