@@ -46,6 +46,6 @@ class HashtagFiltersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def hashtag_filter_params
-      params.require(:hashtag_filter).permit(:text)
+      params.require(:hashtag_filter).permit(:text).reject{|_, v| v.blank?}
     end
 end
