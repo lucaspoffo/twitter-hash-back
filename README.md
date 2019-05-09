@@ -4,7 +4,7 @@ Aplicação que consome a API do Twitter para armazenar tweets que contenham has
 
 ## Ruby on Rails
 
-Foi utilizado essa framework de aplicação web, no modo de API, para desenvolver esse aplicativo. Utilizando as rotas de recursos no modelo REST fornecidos pelo rails, criar modelos e fornecelos pela API foi de muita facilidade.
+Foi utilizado essa framework de aplicação web, no modo de API, para o desenvolvimento desse aplicativo. Utilizando as rotas de recursos no modelo REST fornecidos pelo rails, facilitou a criação de modelos e fornece-los por uma API.
 
 ## Instalação
 
@@ -29,6 +29,6 @@ TWITTER_ACCESS_TOKEN=<ACCESS_TOKEN>
 TWITTER_ACCESS_SECRET=<ACCESS_TOKEN_SECRET>
 ```
 
-Para subir o ambiente de desolvovimento execute o camando:
+Para subir o ambiente de desolvovimento execute o comando:
     
     $ rails server
