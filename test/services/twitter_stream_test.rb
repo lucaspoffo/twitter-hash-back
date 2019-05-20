@@ -53,15 +53,4 @@ class  TwitterStreamServiceTest < ActiveSupport::TestCase
     assert_equal Hashtag.count, count + 1
     assert_equal hashtag, Hashtag.find_by(text: 'argentina')
   end
-
-  test "it creates tweet" do
-    count = Tweet.count
-    user = User.first
-    text = 'test tweet'
-    id = 123
-    tweet = TwitterStreamService.instance.createTweet(text, user, id)
-    assert_equal Tweet.count, count + 1
-    assert_equal tweet.user, user
-    assert_equal tweet.text, text
-  end
 end
