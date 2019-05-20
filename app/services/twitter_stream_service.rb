@@ -15,21 +15,32 @@ class TwitterStreamService
 
   def filterByHashtags(hashtags)
     closeStream if @filter_thread && @filter_thread.status
-    hashtags = hashtags.reject {|h| h[:text].blank?}
-    track = hashtags.map {|h| '#' + h[:text]}.join(",")
 
-    return if track.empty?
+    hashtags = hashtags.reject {|h| h[:text].blank?}
+    return if hashtags.empty?
+    track = hashtags.map {|h| '#' + h[:text]}.join(",")
+    
+
+    simple_hashtags = hashtags.map{|h| {text: h[:text].downcase}};
 
     @filter_thread = Thread.new do
       @client.filter(track: track, tweet_mode: 'extended') do |object|
-        tweet_params = object.to_hash
-        text = getTweetText(tweet_params)
-        hashtags = getTweetHashtags(tweet_params)
-  
-        user = findOrCreateUser(tweet_params[:user])
-        tweet = createTweet(text, user, tweet_params[:id])
-      
-        hashtags.each do |h| 
+        parsed_tweet = TweetParserService.new(object.to_hash)
+
+        # exclude retweets
+        next if parsed_tweet.tweet.key?(:retweeted_status)
+        # check if tweet has desired hashtags
+        next if (parsed_tweet.hashtags & simple_hashtags).empty?
+
+        user = findOrCreateUser(parsed_tweet.user)
+    
+        tweet = Tweet.create({
+          text: parsed_tweet.text,
+          user: user,
+          id: parsed_tweet.id
+        })
+
+        parsed_tweet.hashtags.each do |h| 
           hashtag = findOrCreateHashtag(h[:text])
           tweet.hashtags << hashtag
         end
@@ -37,32 +48,9 @@ class TwitterStreamService
     end
   end
 
-  def getTweetText(params)
-    if params[:truncated] 
-      return params[:extended_tweet][:full_text]
-    end
-    return params[:text]
-  end
-
   def closeStream
     @client.close
     @filter_thread.kill
-  end
-
-  def getTweetHashtags(params)
-    if params[:truncated] 
-      return params[:extended_tweet][:entities][:hashtags]
-    end
-    return params[:entities][:hashtags]
-  end
-
-  def createTweet(text, user, id)
-    tweet = Tweet.create({
-      text: text,
-      user: user,
-      id: id
-    })
-    return tweet
   end
 
   def findOrCreateUser(params)
